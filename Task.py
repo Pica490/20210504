@@ -14,17 +14,17 @@ class VkUnloader:
         for name in list_photos:
             a.append(name['photo_name'])
 
-        i = 0
+
         for k, v in Counter(a).items():
 
             if v > 1:
-
+                i = 0
                 for name in list_photos:
                     if name['photo_name'] == k:
                         s = int(res['response']['items'][i]['date'])
                         s_datetime = datetime.utcfromtimestamp(s).strftime('%Y%m%d')
                         list_photos[i]['photo_name'] = str(name['photo_name'][:-4]) + '_' + str(s_datetime) + '.jpg'
-                        i = i + 1
+                    i = i + 1
         return list_photos
 
     def chose_max_size(self, values):
