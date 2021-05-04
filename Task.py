@@ -3,21 +3,28 @@ from pprint import pprint
 from datetime import datetime
 import json
 import os
+from collections import Counter
 
 class VkUnloader:
     def __init__(self, user_id):
         self.user_id = user_id
 
     def rename_list(self, list_photos, res):
-        n = list_photos[len(list_photos)-1]['photo_name']
-        i = 0
+        a = []
         for name in list_photos:
-            if name['photo_name'] == n:
-                s = int(res['response']['items'][i]['date'])
-                s_datetime = datetime.utcfromtimestamp(s).strftime('%Y%m%d')
-                list_photos[i]['photo_name'] = str(name['photo_name'][:-4]) + '_' + str(s_datetime) + '.jpg'
-                i = i + 1
-            n = name['photo_name']
+            a.append(name['photo_name'])
+
+        i = 0
+        for k, v in Counter(a).items():
+
+            if v > 1:
+
+                for name in list_photos:
+                    if name['photo_name'] == k:
+                        s = int(res['response']['items'][i]['date'])
+                        s_datetime = datetime.utcfromtimestamp(s).strftime('%Y%m%d')
+                        list_photos[i]['photo_name'] = str(name['photo_name'][:-4]) + '_' + str(s_datetime) + '.jpg'
+                        i = i + 1
         return list_photos
 
     def chose_max_size(self, values):
