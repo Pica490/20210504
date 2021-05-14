@@ -33,13 +33,14 @@ class VkUnloader:
             if sizes['height'] > maximum:
                 max_url = sizes['url']
                 max_type = sizes['type']
+                maximum = sizes['height']
         return max_url, max_type
 
-    def _get_photos(self, user_id):
+    def _get_photos(self, token_vk):
         URL = 'https://api.vk.com/method/photos.get'
         params = {
-        'user_id': user_id,
-        'access_token': ' ', # токен и версия api являются обязательными параметрами во всех запросах к vk\n",
+        'user_id': self.user_id,
+        'access_token': token_vk, # токен и версия api являются обязательными параметрами во всех запросах к vk\n",
         'v':'5.130',
         'album_id' : 'profile',
         'extended' : '-1'
@@ -93,5 +94,6 @@ class VkUnloader:
 if __name__ == '__main__':
     vk_unload = VkUnloader('2190409')
     token = ' '
-    result = vk_unload._get_photos('2190409')
+    token_vk = ' '
+    result = vk_unload._get_photos(token_vk)
     result2 = vk_unload.upload_file_to_disk(result, token)
